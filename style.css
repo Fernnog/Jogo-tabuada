@@ -40,17 +40,62 @@ h1 { font-family: 'Luckiest Guy', cursive; font-size: 2.1em; font-weight: normal
 #progress-bar { height: 100%; width: 0%; background-color: var(--progress-bar-color); border-radius: 4px; transition: width 0.5s ease-out; }
 #game-area { width: 100%; height: 315px; border: none; background-color: var(--sky-color); position: relative; overflow: hidden; margin-top: 0; border-radius: 10px; transition: background-color 0.8s ease; flex-shrink: 0; }
 #background-decorations { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 0; }
-.bg-balloon { position: absolute; bottom: -30px; width: 15px; height: 20px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; opacity: 0; animation: floatUp 15s linear infinite; z-index: 0; /* Garante fundo */ }
-.bg-balloon::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 1px; height: 15px; background-color: rgba(0, 0, 0, 0.4); }
-.bg-balloon:nth-child(1) { left: 8%; background-color: #ffadad; animation-delay: 0s; width: 18px; height: 24px; }
-.bg-balloon:nth-child(2) { left: 25%; background-color: #a0e7ff; animation-delay: 2s; width: 16px; height: 22px; }
-.bg-balloon:nth-child(3) { left: 40%; background-color: #b9ffb0; animation-delay: 5s; width: 15px; height: 20px; }
-.bg-balloon:nth-child(4) { left: 55%; background-color: #fff59d; animation-delay: 8s; width: 17px; height: 23px; }
-.bg-balloon:nth-child(5) { left: 70%; background-color: #ffcc80; animation-delay: 11s; width: 14px; height: 19px; }
-.bg-balloon:nth-child(6) { left: 85%; background-color: #b39ddb; animation-delay: 13s; width: 18px; height: 24px; }
-.bg-balloon:nth-child(7) { left: 15%; background-color: #f48fb1; animation-delay: 9s; width: 16px; height: 21px; opacity: 0.6; }
-.bg-balloon:nth-child(8) { left: 92%; background-color: #80cbc4; animation-delay: 4s; width: 15px; height: 20px; opacity: 0.75; }
-@keyframes floatUp { 0% { transform: translateY(0) translateX(0) rotate(-5deg); opacity: 0.6; } 50% { transform: translateY(-160px) translateX(5px) rotate(5deg); opacity: 0.9; } 99.9% { transform: translateY(-320px) translateX(-3px) rotate(-8deg); opacity: 0; bottom: 100%; } 100% { transform: translateY(0); opacity: 0; bottom: -30px; } }
+
+/* --- Estilos Balões de Fundo - ALTERADOS --- */
+.bg-balloon {
+    position: absolute;
+    /* bottom: -30px; */ /* REMOVIDO - Posição inicial alterada */
+    bottom: 38px;      /* ALTERADO - Para iniciar visualmente acima dos carrinhos */
+    width: 15px;
+    height: 20px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    /* opacity: 0; */    /* REMOVIDO - Inicia visível */
+    opacity: 0.7;      /* ALTERADO - Inicia com alguma opacidade */
+    animation: floatUp 15s linear infinite;
+    z-index: 7; /* ALTERADO - Acima dos coelhos e carrinhos (z-index 6) */
+}
+.bg-balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -15px; /* Mantido */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 15px;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+/* Posições 'left' ajustadas para coincidir com os carrinhos */
+.bg-balloon:nth-child(1) { left: 8%; background-color: #ffadad; animation-delay: 0s; width: 18px; height: 24px; } /* Perto carrinho esq 1 */
+.bg-balloon:nth-child(2) { left: 18%; background-color: #a0e7ff; animation-delay: 2s; width: 16px; height: 22px; } /* Perto carrinho esq 2 */
+.bg-balloon:nth-child(3) { left: 28%; background-color: #b9ffb0; animation-delay: 5s; width: 15px; height: 20px; } /* Perto carrinho esq 3 */
+.bg-balloon:nth-child(4) { left: 50%; background-color: #fff59d; animation-delay: 8s; width: 17px; height: 23px; transform: translateX(-50%);} /* Carrinho Central */
+.bg-balloon:nth-child(5) { left: 72%; background-color: #ffcc80; animation-delay: 11s; width: 14px; height: 19px; } /* Perto carrinho dir 1 */
+.bg-balloon:nth-child(6) { left: 82%; background-color: #b39ddb; animation-delay: 13s; width: 18px; height: 24px; } /* Perto carrinho dir 2 */
+.bg-balloon:nth-child(7) { left: 92%; background-color: #f48fb1; animation-delay: 9s; width: 16px; height: 21px; opacity: 0.6; } /* Perto carrinho dir 3 */
+.bg-balloon:nth-child(8) { left: 45%; background-color: #80cbc4; animation-delay: 4s; width: 15px; height: 20px; opacity: 0.75; } /* Perto carrinho central (ligeiro offset) */
+
+/* --- Animação floatUp - ALTERADA --- */
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) translateX(0) rotate(-5deg);
+        opacity: 0.7; /* Inicia visível */
+    }
+    50% {
+        transform: translateY(-180px) translateX(5px) rotate(5deg); /* Ajuste da subida intermediária */
+        opacity: 0.9;
+    }
+    99.9% {
+        transform: translateY(-360px) translateX(-3px) rotate(-8deg); /* Garante que suba o suficiente */
+        opacity: 0;
+        bottom: 100%; /* Vai até o topo */
+    }
+    100% {
+        transform: translateY(0); /* Reseta transform */
+        opacity: 0;             /* Fica invisível */
+        bottom: 38px;           /* Reseta para a posição inicial 'bottom' */
+    }
+}
+
 .cloud { position: absolute; background-color: var(--cloud-color); border-radius: 50%; box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); opacity: 0.9; z-index: 1; animation: drift 40s linear infinite alternate; }
 .cloud::before, .cloud::after { content:''; position:absolute; background-color:var(--cloud-color); border-radius:50%; box-shadow:inherit; }
 #cloud1 { top: 10%; left: 12%; width: 70px; height: 42px; animation-duration: 45s; }
@@ -68,63 +113,68 @@ h1 { font-family: 'Luckiest Guy', cursive; font-size: 2.1em; font-weight: normal
 .falling { display: block !important; animation-play-state: running !important; }
 @keyframes fall { from { top: 15%; transform: translateX(-50%) rotate(0deg); } 50% { transform: translateX(-55%) rotate(-4deg); } to { top: 100%; transform: translateX(-48%) rotate(3deg); } }
 
-/* --- Animação POP do Balão - ALTERADA --- */
+/* Animação POP do Balão (já modificada anteriormente) */
 @keyframes pop {
     0% { transform: translateX(-50%) scale(1); opacity: 1; }
-    50% { transform: translateX(-50%) scale(1.5); opacity: 0.8; } /* Aumentado o scale intermediário */
-    100% { transform: translateX(-50%) scale(1.8); opacity: 0; } /* Aumentado o scale final */
+    50% { transform: translateX(-50%) scale(1.5); opacity: 0.8; }
+    100% { transform: translateX(-50%) scale(1.8); opacity: 0; }
 }
 .pop-animation {
-    animation: pop 0.3s ease-out forwards !important; /* Duração levemente reduzida */
+    animation: pop 0.3s ease-out forwards !important;
     animation-play-state: running !important;
 }
 
-/* --- Estilos para Solo, Arbustos e Coelhos --- */
+/* --- Estilos para Solo, Arbustos, Carrinhos e Coelhos --- */
 #ground {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 45px; /* Altura do solo */
+    height: 45px; /* Altura do solo mantida */
     background: linear-gradient(to bottom, var(--ground-top), var(--ground-bottom));
-    z-index: 4; /* Abaixo dos power-ups (5) e balão (10), acima das nuvens (1) e sol (2) */
+    z-index: 4;
     border-top: 2px solid var(--ground-border);
 }
 
-/* Arbustos usando pseudo-elementos - ALTERADOS */
+/* Arbustos usando pseudo-elementos (mantidos como estavam na última modificação) */
 #ground::before,
 #ground::after {
     content: '';
     position: absolute;
-    bottom: 0; /* Alinhado com a parte inferior do solo */
-    /* width: 60px; */ /* Removido valor fixo aqui */
-    /* height: 35px; */ /* Removido valor fixo aqui */
-    background-color: var(--bush-green1); /* Verde para os arbustos */
-    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%; /* Forma de arbusto */
-    z-index: 5; /* Acima do solo (4), abaixo dos coelhos (6) */
-    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.2); /* Sombra interna */
+    bottom: 0;
+    background-color: var(--bush-green1);
+    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+    z-index: 5;
+    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.2);
 }
+#ground::before { left: 12%; width: 60px; height: 32px; background-color: var(--bush-green2); }
+#ground::after { right: 15%; width: 55px; height: 30px; transform: scaleX(-1); background-color: var(--bush-green1); }
 
-#ground::before {
-    left: 12%; /* Posição do primeiro arbusto - ajustado */
-    width: 60px; /* Largura levemente ajustada */
-    height: 32px; /* Altura levemente ajustada */
-    background-color: var(--bush-green2); /* Tom de verde ligeiramente diferente */
+/* --- NOVOS Estilos para os Carrinhos de Pipoca --- */
+.popcorn-cart {
+    position: absolute;
+    bottom: 2px;      /* Alinha base do carrinho um pouco acima da borda inferior do solo */
+    height: 38px;     /* Altura do carrinho (ajuste conforme necessário) */
+    width: auto;      /* Mantém proporção */
+    z-index: 6;       /* Mesma camada dos coelhos */
+    user-select: none;
+    -webkit-user-drag: none;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2)); /* Sombra leve */
 }
+/* Posicionamento específico dos carrinhos */
+#popcorn-cart-left1 { left: 5%; }
+#popcorn-cart-left2 { left: 15%; }
+#popcorn-cart-left3 { left: 25%; }
+#popcorn-cart-center { left: 50%; transform: translateX(-50%); } /* Centralizado */
+#popcorn-cart-right1 { right: 25%; transform: scaleX(-1);} /* Espelhado */
+#popcorn-cart-right2 { right: 15%; transform: scaleX(-1);} /* Espelhado */
+#popcorn-cart-right3 { right: 5%; transform: scaleX(-1);} /* Espelhado */
 
-#ground::after {
-    right: 15%; /* Posição do segundo arbusto - ajustado */
-    width: 55px; /* Largura levemente ajustada */
-    height: 30px; /* Altura levemente ajustada */
-    transform: scaleX(-1); /* Espelha para variar um pouco */
-    background-color: var(--bush-green1); /* Cor base */
-}
 
-/* Estilos para os Coelhos SVG - ALTERADOS */
+/* Estilos para os Coelhos SVG (já modificados anteriormente) */
 #rabbit-left,
 #rabbit-right {
     position: absolute;
-    /* bottom: 0px; */ /* Substituido por ajuste fino abaixo */
     bottom: -2px;      /* Ajuste fino para sentar melhor na linha do solo */
     height: 52px;     /* AUMENTADO em ~50% (original 35px) */
     width: auto;      /* Largura automática para manter a proporção */
@@ -133,16 +183,9 @@ h1 { font-family: 'Luckiest Guy', cursive; font-size: 2.1em; font-weight: normal
     user-select: none;
     -webkit-user-drag: none;
 }
-
-#rabbit-left {
-    left: 8%; /* Posição do coelho esquerdo (mantida) */
-}
-
-#rabbit-right {
-    right: 18%; /* Posição do coelho direito - AJUSTADA para não ficar tão na borda */
-    transform: scaleX(-1);
-}
-/* --- Fim dos estilos Solo/Arbustos/Coelhos --- */
+#rabbit-left { left: 8%; }
+#rabbit-right { right: 18%; transform: scaleX(-1); }
+/* --- Fim dos estilos Solo/Arbustos/Carrinhos/Coelhos --- */
 
 
 #input-area { margin-top: 10px; width: 100%; text-align: center; flex-shrink: 0; }
@@ -173,9 +216,9 @@ h1 { font-family: 'Luckiest Guy', cursive; font-size: 2.1em; font-weight: normal
 .keypad-button.action.enter { background-color: var(--keypad-enter-bg); border-bottom-color: #66bb6a; } .keypad-button.action.enter:active { background-color: var(--keypad-enter-active-bg); }
 .keypad-button.action.backspace { background-color: var(--keypad-back-bg); border-bottom-color: #ffa726; } .keypad-button.action.backspace:active { background-color: var(--keypad-back-active-bg); }
 #phase-transition-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; animation: fadeOverlay 1.8s ease-in-out forwards; }
-/* Transição de fase - NÚMERO - ALTERADO */
+/* Transição de fase - NÚMERO (já modificada anteriormente) */
 #phase-transition-number {
-    font-size: 22vw; /* AUMENTADO o tamanho */
+    font-size: 22vw;
     font-weight: bold;
     color: white;
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
