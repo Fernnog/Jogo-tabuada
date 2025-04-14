@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jogo da Tabuada v15 - Separado</title> <!-- Versão Atualizada -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+    <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <h1>Jogo da Tabuada</h1>
+
+    <!-- Área de Ativação de Som SIMPLIFICADA -->
+    <div id="sound-activation-area" style="margin-bottom: 10px; text-align: center;">
+        <button type="button" id="activate-sounds-button" class="info-button">🔊 Ativar Sons</button>
+        <span id="sound-status" style="margin-left: 10px; font-size: 0.9em; color: #666;"></span>
+        <!-- O div de download foi REMOVIDO -->
+    </div>
+
+    <div id="game-container">
+        <div id="achievement-notification">🏆 Conquista Desbloqueada!</div>
+
+        <div id="info-bar">
+             <div class="info-group left">
+                 <div id="score">🌟 Score: <span class="score-value">0</span></div>
+                 <div id="lives-display">💖💖💖</div>
+             </div>
+             <div class="info-group right">
+                  <button type="button" id="show-rules-button" class="info-button">Regras</button>
+                  <div id="high-score">🏆 Recorde: <span class="score-value">0</span></div>
+                 <div id="current-table-info">Tabuada do: 2</div>
+             </div>
+        </div>
+
+        <div id="progress-container"> <div id="progress-bar"></div> </div>
+
+        <div id="game-area">
+            <div id="background-decorations">
+                <div class="bg-balloon"></div> <div class="bg-balloon"></div> <div class="bg-balloon"></div> <div class="bg-balloon"></div>
+                <div class="bg-balloon"></div> <div class="bg-balloon"></div> <div class="bg-balloon"></div> <div class="bg-balloon"></div>
+            </div>
+            <div class="sun">☀️</div>
+            <div class="cloud" id="cloud1"></div> <div class="cloud" id="cloud2"></div> <div class="cloud" id="cloud3"></div>
+            <div id="power-up-container"></div>
+            <div id="problem-balloon">? x ? = ?</div>
+        </div>
+
+        <div id="input-area">
+            <input type="text" id="answer-input" placeholder="---" inputmode="none" readonly>
+        </div>
+
+        <div id="feedback"></div>
+
+        <div id="keypad-controls-container">
+            <div id="controls-buttons-wrapper">
+                <div id="star-power-area">
+                    <div id="star-power-display">🌟 x 0</div>
+                    <button type="button" id="use-star-button" disabled>Usar 🌟</button>
+                </div>
+                <button type="button" id="ingame-restart-button">Reiniciar</button>
+            </div>
+            <div id="keypad-area">
+                 <div class="keypad-row"> <button type="button" class="keypad-button digit">7</button> <button type="button" class="keypad-button digit">8</button> <button type="button" class="keypad-button digit">9</button> </div>
+                 <div class="keypad-row"> <button type="button" class="keypad-button digit">4</button> <button type="button" class="keypad-button digit">5</button> <button type="button" class="keypad-button digit">6</button> </div>
+                 <div class="keypad-row"> <button type="button" class="keypad-button digit">1</button> <button type="button" class="keypad-button digit">2</button> <button type="button" class="keypad-button digit">3</button> </div>
+                 <div class="keypad-row"> <button type="button" class="keypad-button action backspace">⌫</button> <button type="button" class="keypad-button digit">0</button> <button type="button" class="keypad-button action enter">➜</button> </div>
+            </div>
+        </div>
+
+        <button id="restart-button" onclick="startGame()">Jogar Novamente</button>
+
+    </div> <!-- Fim do #game-container -->
+
+     <!-- Modal de Regras (Instruções de som SIMPLIFICADAS) -->
+     <div id="rules-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Regras do Jogo</h2>
+            <ul>
+                <li>Acerte a resposta da multiplicação antes que o balão caia!</li>
+                <li>Use o teclado numérico para digitar e ➜ para confirmar.</li>
+                <li>✅ Resposta correta: Ganha pontos, avança para a próxima.</li>
+                <li>❌ Resposta errada ou tempo esgotado: Perde uma vida 💔.</li>
+                <li>Vidas: Começa com 💖💖💖. Fim de jogo se acabarem.</li>
+                <li>Power-ups (colete acertando a questão enquanto eles estão na tela):
+                    <ul>
+                        <li>⭐ Estrela: Colete para usar depois (botão "Usar 🌟") e acertar a questão automaticamente.</li>
+                        <li>⏳ Ampulheta: Deixa o *próximo* balão mais lento.</li>
+                        <li>⚡ Raio: Cai rápido! Se coletar, ganha o *dobro* de pontos na questão.</li>
+                    </ul>
+                </li>
+                 <li>🔊 Para ativar os sons (opcional): Clique no botão "🔊 Ativar Sons" no topo (pode ser necessário na primeira vez que jogar).</li>
+                 <li>Objetivo: Complete todas as tabuadas do 2 ao 9 (até 9 x 10).</li>
+                 <li>🏆 Desbloqueie conquistas por seus feitos!</li>
+            </ul>
+            <button type="button" id="close-rules-button" class="modal-close-button">Fechar</button>
+        </div>
+    </div>
+
+    <div id="phase-transition-overlay" style="display: none;"> <div id="phase-transition-number"></div> </div>
+
+    <!-- Link para o arquivo JavaScript externo -->
+    <script src="script.js" defer></script>
+</body>
+</html>
